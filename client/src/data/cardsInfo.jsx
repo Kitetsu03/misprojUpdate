@@ -1,0 +1,225 @@
+import { SlPeople } from "react-icons/sl";
+import { ImStack } from "react-icons/im";
+import { BsWindowSidebar } from "react-icons/bs";
+import { FaRegHeart } from "react-icons/fa";
+
+export const infoCard = [
+  {
+    id: 1,
+    title: "CATEGORY 1",
+    icon: <SlPeople size={36} />,
+    info: "Total Members",
+    value: 150,
+    desc: "+ 6 from last month",
+  },
+  {
+    id: 2,
+    title: "CATEGORY 2",
+    icon: <ImStack size={36} />,
+    info: "Worship Attending Members",
+    value: 90,
+    desc: "+ 3 from last month",
+  },
+
+  {
+    id: 3,
+    title: "ACTIVE LIFEGROUPS",
+    icon: <FaRegHeart size={36} />,
+    value: 4,
+    desc: "+ 1 new group this month",
+  },
+];
+export const ageCard = [
+  {
+    id: 1,
+    title: "MEN",
+    icon: <SlPeople size={36} />,
+    info: "30 years old and above",
+    value: "24.24%",
+    desc: "+8% growth from last month",
+  },
+  {
+    id: 2,
+    title: "WOMEN",
+    icon: <ImStack size={36} />,
+    info: "30 years old and above",
+    value: "24.24%",
+    desc: "+8% growth from last month",
+  },
+  {
+    id: 3,
+    title: "KKB",
+    icon: <BsWindowSidebar size={36} />,
+    info: "13 - 23 years old",
+    value: "18.18%",
+    desc: "+8% growth from last month",
+  },
+  {
+    id: 4,
+    title: "YAN",
+    icon: <BsWindowSidebar size={36} />,
+    info: "24 - 29 years old",
+    value: "15.15%",
+    desc: "+8% growth from last month",
+  },
+  {
+    id: 5,
+    title: "CHILDREN",
+    icon: <FaRegHeart size={36} />,
+    info: "4 - 12 years old",
+    value: "18.18%",
+    desc: "+8% growth from last month",
+  },
+];
+export const attendanceCard = [
+  {
+    id: 1,
+    title: "PEAK ATTENDANCE",
+    icon: <SlPeople size={34} />,
+    info: "Highest number of attendance recorded",
+    value: "94",
+    desc: "Recorded in October",
+  },
+  {
+    id: 2,
+    title: "GROWTH RATE",
+    icon: <ImStack size={36} />,
+    info: "Percentage increase in attendance",
+    value: "+8.5%",
+    desc: "From last year",
+  },
+  {
+    id: 3,
+    title: "AVG ATTENDANCE",
+    icon: <BsWindowSidebar size={36} />,
+    info: "Average number of attendees per service",
+    value: "80",
+    desc: "from 70 attendees last year",
+  },
+  {
+    id: 4,
+    title: "NUMBER OF FT",
+    icon: <BsWindowSidebar size={36} />,
+    info: "Number of first-time attendees",
+    value: "410",
+    desc: "total first-timers this year",
+  },
+];
+export const lifeGroupCard = [
+  {
+    id: 1,
+    title: "CITIES",
+    icon: <SlPeople size={34} />,
+    info: "Cities reach by the church’s Life Groups",
+    value: "1",
+    desc: "No new city this month",
+  },
+  {
+    id: 2,
+    title: "BARANGAYS",
+    icon: <SlPeople size={34} />,
+    info: "Barangays with active Lifegroups",
+    value: "11",
+    desc: "1 New barangay added this month",
+  },
+  {
+    id: 3,
+    title: "NUMBER OF LG LEADERS",
+    icon: <ImStack size={36} />,
+    info: "Number of Lifegroup leaders",
+    value: "6",
+    desc: "1 New leader added this month",
+  },
+  {
+    id: 4,
+    title: "ACTIVE LIFEGROUPS",
+    icon: <BsWindowSidebar size={36} />,
+    info: "Active Lifegroups this month",
+    value: "8",
+    desc: "1 New Lifegroup this month",
+  },
+];
+export const financeCard = [
+  {
+    id: 1,
+    title: "NUMBER OF TITHERS",
+    icon: <SlPeople size={34} />,
+    info: "Tithers this week",
+    value: "60",
+    desc: "5 New Tithers this week",
+  },
+  {
+    id: 2,
+    title: "TITHES & OFFERINGS",
+    icon: <SlPeople size={36} />,
+    info: "Total tithes and offerings this month",
+    value: "₱10K",
+    desc: "+ 8.2% from last month",
+  },
+  {
+    id: 3,
+    title: "MISSION",
+    icon: <ImStack size={36} />,
+    info: "Total mission offerings this month",
+    value: "₱1K",
+    desc: "+ 8.2% from last month",
+  },
+  {
+    id: 4,
+    title: "PLEDGES",
+    icon: <BsWindowSidebar size={36} />,
+    info: "Total pledges this month",
+    value: "₱1K",
+    desc: "+ 8.2% from last month",
+  },
+];
+export const ministryCard = [
+  {
+    id: 1,
+    title: "FULLTIME",
+    icon: <SlPeople size={36} />,
+    info: "Total fulltime pastors and staff",
+    value: "2",
+    desc: "No new pastor this month",
+  },
+  {
+    id: 2,
+    title: "NON-FULLTIME",
+    icon: <SlPeople size={36} />,
+    info: "Total non-fulltime pastors and staff",
+    value: "5",
+    desc: "No new non-fulltime pastor this month",
+  },
+  {
+    id: 3,
+    title: "VOLUNTEERS",
+    icon: <ImStack size={36} />,
+    info: "Total volunteers",
+    value: "20",
+    desc: "+ 2 from last month",
+  },
+  {
+    id: 4,
+    title: "WORSHIP ARTS NETWORK",
+    icon: <BsWindowSidebar size={36} />,
+    info: "Worship arts members",
+    value: "10",
+    desc: "+ 1 from last month",
+  },
+  {
+    id: 5,
+    title: "MULTIMEDIA ARTS NETWORK",
+    icon: <BsWindowSidebar size={36} />,
+    info: "Multimedia arts members",
+    value: "8",
+    desc: "+ 2 from last month",
+  },
+  {
+    id: 6,
+    title: "LIFEGROUP LEADERS",
+    icon: <BsWindowSidebar size={36} />,
+    info: "Total Lifegroup leaders",
+    value: "6",
+    desc: "+ 1 from last month",
+  },
+];
