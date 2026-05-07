@@ -137,6 +137,7 @@ export const getMembersService = async () => {
 
       contact_no: member?.contact_no || "N/A",
       status: member?.status || "incomplete",
+      network: member?.network,
 
       lastLogin: user.lastLogin
         ? new Date(user.lastLogin).toLocaleString("en-PH", {

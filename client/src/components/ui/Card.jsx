@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 function Card({ title, icon, value, desc, info }) {
   const cardSpring = { type: "spring", stiffness: 300, damping: 26 };

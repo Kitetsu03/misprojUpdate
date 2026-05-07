@@ -446,6 +446,7 @@ function MembersData() {
                 />
                 <div className="md:flex-row md:gap-2 flex md:justify-end">
                   <Dropdown
+                    color="bg-[#A7E6FF]"
                     value={statusFilter}
                     placeholder="Filter by status"
                     onChange={(value) => setStatusFilter(value)}
@@ -458,6 +459,7 @@ function MembersData() {
                   />
 
                   <Dropdown
+                    color="bg-[#A7E6FF]"
                     value={categoryFilter}
                     placeholder="Filter by category"
                     onChange={(value) => setCategoryFilter(value)}
@@ -469,6 +471,7 @@ function MembersData() {
                     ]}
                   />
                   <Dropdown
+                    color="bg-[#A7E6FF]"
                     value={sortBy}
                     placeholder="Sort by name"
                     onChange={(value) => setSortBy(value)}

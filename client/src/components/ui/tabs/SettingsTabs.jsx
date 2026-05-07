@@ -14,7 +14,7 @@ export const SettingsTabs = () => {
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
 
-  const [submitting, setSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState([]);
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -27,7 +27,7 @@ export const SettingsTabs = () => {
 
   const fetchEvents = async () => {
     try {
-      setSubmitting(true);
+      setLoading(true);
 
       const response = await getServices();
 
@@ -41,7 +41,7 @@ export const SettingsTabs = () => {
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
     } finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   };
 
@@ -188,7 +188,7 @@ export const SettingsTabs = () => {
             </div>
           </div>
           {/* EVENTS */}
-          {submitting ? (
+          {loading ? (
             <div className="text-gray-500 text-sm">Loading events...</div>
           ) : events.length === 0 ? (
             <div className="text-gray-500 text-sm">No events found.</div>

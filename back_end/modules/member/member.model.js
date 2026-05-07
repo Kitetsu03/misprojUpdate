@@ -7,7 +7,6 @@ const memberSchema = new mongoose.Schema(
       ref: "User",
     },
 
-    // personal info
     first_name: String,
     last_name: String,
     middle_name: String,
@@ -23,7 +22,6 @@ const memberSchema = new mongoose.Schema(
       enum: ["female", "male"],
     },
 
-    // contact
     contact_no: String,
     email: {
       type: String,
@@ -32,7 +30,6 @@ const memberSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // address
     address: {
       province: String,
       city: String,
@@ -44,6 +41,11 @@ const memberSchema = new mongoose.Schema(
       type: String,
       enum: ["active", "inactive"],
       default: "active",
+    },
+
+    network: {
+      type: String,
+      enum: ["Children", "KKB", "YAN", "Men", "Women"],
     },
 
     is_enabled: {
@@ -63,6 +65,37 @@ const memberSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+memberSchema.pre("save", function (next) {
+  if (!this.birth_date || !this.sex) {
+    return next();
+  }
+
+  const today = new Date();
+
+  let age = today.getFullYear() - this.birth_date.getFullYear();
+
+  const monthDiff = today.getMonth() - this.birth_date.getMonth();
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < this.birth_date.getDate())
+  ) {
+    age--;
+  }
+
+  if (age >= 4 && age <= 12) {
+    this.network = "Children";
+  } else if (age >= 13 && age <= 22) {
+    this.network = "KKB";
+  } else if (age >= 23 && age <= 29) {
+    this.network = "YAN";
+  } else if (age >= 30) {
+    this.network = this.sex === "male" ? "Men" : "Women";
+  }
+
+  next();
+});
 
 const Member = mongoose.model("Member", memberSchema);
 export default Member;

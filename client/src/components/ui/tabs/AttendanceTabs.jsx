@@ -2,76 +2,71 @@ import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+
 import SearchBar from "../input/SearchBar.jsx";
+import Dropdown from "../buttons/Dropdown.jsx";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FiKey } from "react-icons/fi";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import AttendanceModal from "../modals/attendance/AttendanceModal.jsx";
+import { getServices } from "../../../services/worshipEventService.js";
+
+import { motion } from "motion/react";
 
 export const AttendanceTabs = () => {
+  const [value, setValue] = useState(0);
   const [searchValue, setSearchValue] = useState("");
   const [query, setQuery] = useState("");
   const [attendanceModalOpen, setAttendanceModalOpen] = useState(false);
+  const [eventTypeFilter, setEventTypeFilter] = useState("");
+  const [events, setEvents] = useState([]);
 
-  const users = useMemo(
-    () => [
-      {
-        id: 1,
-        name: "John Smith",
-        network: "Men",
-        attendance: "Present",
-        timedate: "2025-01-15 | 8:20 AM",
-        weeksAttended: 12,
-        status: "Member",
-        lgname: "Daniel",
-      },
-      {
-        id: 2,
-        name: "Sarah Johnson",
-        network: "YAN",
-        attendance: "Present",
-        timedate: "2025-01-15 | 8:10 AM",
-        weeksAttended: 12,
-        status: "Member",
-        lgname: "Moses",
-      },
-      {
-        id: 3,
-        name: "Mike Peters",
-        network: "KKB",
-        attendance: "Present",
-        timedate: "2025-01-15 | 8:05 AM",
-        weeksAttended: 12,
-        status: "Member",
-        lgname: "Samuel",
-      },
-      {
-        id: 4,
-        name: "Lisa Chen",
-        network: "Women",
-        attendance: "Present",
-        timedate: "2025-01-15 | 8:00 AM",
-        weeksAttended: 12,
-        status: "Member",
-        lgname: "Esther",
-      },
-    ],
-    [],
-  );
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const filteredUsers = useMemo(() => {
-    if (!query) return users;
+  const [loading, setLoading] = useState(false);
 
-    const q = query.toLowerCase();
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-    return users.filter(
-      (u) =>
-        u.name.toLowerCase().includes(q) || u.network.toLowerCase().includes(q),
+  const handleOpenAttendance = (event) => {
+    setSelectedEvent(event);
+    setAttendanceModalOpen(true);
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      setLoading(true);
+      const response = await getServices();
+
+      setEvents(response.data);
+    } catch (error) {
+      setSnackbarMessage(
+        error.response?.data?.message || "Failed to fetch events.",
+      );
+      setSnackbarSeverity("error");
+      setOpenSnackbar(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredEvents = useMemo(() => {
+    if (!eventTypeFilter) return events;
+
+    return events.filter(
+      (event) => event.title?.toLowerCase() === eventTypeFilter.toLowerCase(),
     );
-  }, [users, query]);
 
-  const [value, setValue] = useState(0);
+    console.log(events);
+  }, [events, eventTypeFilter]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -105,8 +100,41 @@ export const AttendanceTabs = () => {
       "aria-controls": `simple-tabpanel-${index}`,
     };
   }
+
+  // ANIMATIONS
+  const cardSpring = {
+    type: "spring",
+    stiffness: 300,
+    damping: 26,
+  };
+
+  const cardAnim = {
+    initial: { opacity: 0, y: 8 },
+    animate: { opacity: 1, y: 0 },
+  };
+
   return (
     <>
+      <div className="card mx-2 w-full rounded-2xl">
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={3000}
+          onClose={() => setOpenSnackbar(false)}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <Alert
+            onClose={() => setOpenSnackbar(false)}
+            severity={snackbarSeverity}
+            variant="filled"
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+      </div>
+
       <div className="card w-full rounded-2xl">
         <Box>
           <Tabs
@@ -121,302 +149,111 @@ export const AttendanceTabs = () => {
           </Tabs>
         </Box>
       </div>
-      <CustomTabPanel value={value} index={0}>
-        <main className="flex-1 p-1 space-y-2 font-secondary">
-          <AttendanceModal
-            open={attendanceModalOpen}
-            onClose={() => setAttendanceModalOpen(false)}
-            attendees={users}
-          />
-          {/* Search & Filter */}
-          <div className="card p-5 rounded-xl shadow-md">
-            <div className="flex gap-2 justify-between md:flex-row pb-5">
-              <h2 className="font-semibold text-lg">Search & Filter</h2>
-              <button
-                onClick={() => setAttendanceModalOpen(true)}
-                className="bg-black text-white px-5 py-2 rounded-lg shadow-md hover:bg-gray-800 font-secondary"
-              >
-                + Add Attendance
-              </button>
+
+      <div className="card w-full mx-2 rounded-2xl gap-2 mt-2 p-2 flex flex-col font-secondary">
+        <CustomTabPanel value={value} index={0}>
+          <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-4">
+            <div>
+              <h2 className="font-semibold text-lg">Service Schedule</h2>
+              <p className="text-sm text-gray-600 mb-8">
+                Manage service times and locations.
+              </p>
             </div>
-            <div className="flex gap-2 flex-col md:flex-row">
-              <SearchBar
-                value={searchValue}
-                onChange={(v) => setSearchValue(v)}
-                onSearch={() => setQuery(searchValue)}
-              />
-
-              <label
-                htmlFor="network-filter"
-                className="text-sm font-medium flex flex-col md:flex-row items-start md:items-center gap-1"
-              >
-                Filter by Network
-              </label>
-              <select
-                id="network-filter"
-                className="px-4 py-2 rounded-lg border bg-[#A7E6FF] border-black"
-              >
-                <option>Network</option>
-                <option>Men</option>
-                <option>Women</option>
-                <option>KKB</option>
-                <option>YAN</option>
-                <option>Children</option>
-              </select>
-              <label
-                htmlFor="from-date"
-                className="text-sm font-medium flex flex-col md:flex-row items-start md:items-center gap-1"
-              >
-                From :
-              </label>
-
-              <input
-                id="from-date"
-                type="date"
-                className="px-4 py-2 rounded-lg border bg-[#A7E6FF] border-black"
-                placeholder="Select Date"
-              />
-              <label
-                htmlFor="to-date"
-                className="text-sm font-medium flex flex-col md:flex-row items-start md:items-center gap-1"
-              >
-                To :
-              </label>
-
-              <input
-                id="to-date"
-                type="date"
-                className="px-4 py-2 rounded-lg border bg-[#A7E6FF] border-black"
-                placeholder="Select Date"
+            <div className="w-full md:w-64">
+              <Dropdown
+                color="bg-[#A7E6FF]"
+                value={eventTypeFilter}
+                placeholder="Filter by event title"
+                onChange={(value) => setEventTypeFilter(value)}
+                options={[
+                  { label: "All Events", value: "" },
+                  { label: "Worship Service", value: "sunday service" },
+                  { label: "Special Service", value: "special service" },
+                  { label: "Prayer Meeting", value: "prayer meeting" },
+                  { label: "Youth Service", value: "youth service" },
+                ]}
               />
             </div>
           </div>
 
-          {/* Users Table */}
-          <div className="bg-[#A7E6FF] p-5 rounded-xl shadow-md">
-            <h2 className="font-semibold text-xl mb-1">
-              Users ({filteredUsers.length})
-            </h2>
-            <p className="text-sm mb-4">
-              Manage user accounts and their access levels.
-            </p>
-
-            {/* Desktop table (hidden on small screens) */}
-            <table className="hidden md:table w-full border-collapse">
-              <thead>
-                <tr className="text-left border-b border-black/20">
-                  <th className="pb-2">Name</th>
-                  <th className="pb-2">Network</th>
-                  <th className="pb-2">Attendance</th>
-                  <th className="pb-2">Time & Date</th>
-                </tr>
-              </thead>
-
-              <tbody className="space-y-4">
-                {filteredUsers.map((u) => (
-                  <tr key={u.id} className="border-b border-black/20 text-sm">
-                    <td className="py-2">{u.name}</td>
-                    <td>{u.network}</td>
-
-                    {/* Roles */}
-                    <td>{u.attendance}</td>
-
-                    <td>{u.timedate}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            {/* Mobile stacked cards (visible on small screens) */}
-            <div className="md:hidden space-y-3">
-              {filteredUsers.map((u) => (
-                <div key={u.id} className="p-4 rounded-lg shadow-sm border">
+          {/* EVENTS */}
+          {loading ? (
+            <div className="text-gray-500 text-sm">Loading events...</div>
+          ) : filteredEvents.length === 0 ? (
+            <div className="text-gray-500 text-sm">No events found.</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
+              {filteredEvents.map((event, index) => (
+                <motion.div
+                  key={event._id}
+                  onClick={() => handleOpenAttendance(event)}
+                  className="card p-5 rounded-2xl text-green-950 flex flex-col cursor-pointer inset-shadow-2xs shadow-md"
+                  whileHover={{
+                    scale: 1.03,
+                    y: -2,
+                  }}
+                  whileTap={{ scale: 0.99 }}
+                  transition={cardSpring}
+                  initial={cardAnim.initial}
+                  animate={cardAnim.animate}
+                  transitionDelay={index * 0.05}
+                >
+                  {/* TITLE */}
                   <div className="flex justify-between items-start">
                     <div>
-                      <div className="font-semibold text-sm">{u.name}</div>
-                      <div className="text-xs text-gray-600">{u.network}</div>
+                      <h3 className="font-semibold text-xl">{event.title}</h3>
+                    </div>
+                  </div>
+
+                  {/* DETAILS */}
+                  <div className="mt-5 space-y-3 text-sm">
+                    <div className="flex justify-between gap-3">
+                      <span className="font-medium">Date</span>
+
+                      <span className="text-right font-medium">
+                        {new Date(event.service_date).toLocaleDateString(
+                          "en-PH",
+                          {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          },
+                        )}
+                      </span>
                     </div>
 
-                    <div className="ml-3">
-                      <span className="bg-black text-white text-xs px-3 py-1 rounded-full">
-                        {u.attendance}
+                    <div className="flex justify-between">
+                      <span className="font-medium">Time</span>
+
+                      <span className="font-medium">{event.time}</span>
+                    </div>
+
+                    <div className="flex justify-between gap-3">
+                      <span className="font-medium">Location</span>
+
+                      <span className="text-right font-medium">
+                        {event.location}
                       </span>
                     </div>
                   </div>
-
-                  <div className="mt-3 flex justify-between items-center text-sm">
-                    <div className="text-gray-600">
-                      Last Login: <span className="text-black">2025-01-15</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        aria-label={`Edit ${u.name}`}
-                        className="text-green-900"
-                      >
-                        <HiOutlinePencilSquare size={26} />
-                      </button>
-                      <button
-                        aria-label={`Link ${u.name}`}
-                        className="text-green-900"
-                      >
-                        <FiKey size={26} />
-                      </button>
-                      <button
-                        aria-label={`Delete ${u.name}`}
-                        className="text-green-900"
-                      >
-                        <FaRegTrashAlt size={23} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
-        </main>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <main className="flex-1 p-1 space-y-5 font-secondary">
-          {/* Search & Filter */}
+          )}
+        </CustomTabPanel>
+      </div>
 
-          <div className="card p-5 rounded-xl shadow-md space-y-3">
-            <h2 className="font-semibold text-lg">Search & Filter</h2>
-            <div className="flex gap-2 flex-col md:flex-row">
-              <SearchBar
-                value={searchValue}
-                onChange={(v) => setSearchValue(v)}
-                onSearch={() => setQuery(searchValue)}
-              />
-              <label
-                htmlFor="network-filter"
-                className="text-sm font-medium flex flex-col md:flex-row items-start md:items-center gap-1"
-              >
-                Filter by Network
-              </label>
-              <select
-                id="network-filter"
-                className="px-4 py-2 rounded-lg border bg-[#A7E6FF] border-black"
-              >
-                <option>Network</option>
-                <option>Men</option>
-                <option>Women</option>
-                <option>KKB</option>
-                <option>YAN</option>
-                <option>Children</option>
-              </select>
-              <label
-                htmlFor="from-date"
-                className="text-sm font-medium flex flex-col md:flex-row items-start md:items-center gap-1"
-              >
-                From :
-              </label>
-              <input
-                id="from-date"
-                type="date"
-                className="px-4 py-2 rounded-lg border bg-[#A7E6FF] border-black"
-                placeholder="From Date"
-              />
-              <label
-                htmlFor="to-date"
-                className="text-sm font-medium flex flex-col md:flex-row items-start md:items-center gap-1"
-              >
-                To :
-              </label>
-              <input
-                id="to-date"
-                type="date"
-                className="px-4 py-2 rounded-lg border bg-[#A7E6FF] border-black"
-                placeholder="To Date"
-              />
-            </div>
-          </div>
+      <CustomTabPanel value={value} index={1}></CustomTabPanel>
 
-          {/* Users Table */}
-          <div className="bg-[#A7E6FF] p-5 rounded-xl shadow-md">
-            <h2 className="font-semibold text-xl mb-1">
-              Users ({filteredUsers.length})
-            </h2>
-            <p className="text-sm mb-4">
-              Manage user accounts and their access levels.
-            </p>
-
-            {/* Desktop table (hidden on small screens) */}
-            <table className="hidden md:table w-full border-collapse">
-              <thead>
-                <tr className="text-left border-b border-black/20">
-                  <th className="pb-2">Name</th>
-                  <th className="pb-2">Network</th>
-                  <th className="pb-2">Attendance</th>
-                  <th className="pb-2">Time & Date</th>
-                  <th className="pb-2">Lifegroup Name</th>
-                </tr>
-              </thead>
-
-              <tbody className="space-y-4">
-                {filteredUsers.map((u) => (
-                  <tr key={u.id} className="border-b border-black/20 text-sm">
-                    <td className="py-2">{u.name}</td>
-                    <td>{u.network}</td>
-
-                    {/* Roles */}
-                    <td>{u.attendance}</td>
-
-                    <td>{u.timedate}</td>
-
-                    <td>{u.lgname}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            {/* Mobile stacked cards (visible on small screens) */}
-            <div className="md:hidden space-y-3">
-              {filteredUsers.map((u) => (
-                <div key={u.id} className=" p-4 rounded-lg shadow-sm border">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <div className="font-semibold text-sm">{u.name}</div>
-                      <div className="text-xs text-gray-600">{u.network}</div>
-                    </div>
-
-                    <div className="ml-3">
-                      <span className="bg-black text-white text-xs px-3 py-1 rounded-full">
-                        {u.attendance}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-3 flex justify-between items-center text-sm">
-                    <div className="text-gray-600">
-                      Last Login: <span className="text-black">2025-01-15</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        aria-label={`Edit ${u.name}`}
-                        className="text-green-900"
-                      >
-                        <HiOutlinePencilSquare size={26} />
-                      </button>
-                      <button
-                        aria-label={`Link ${u.name}`}
-                        className="text-green-900"
-                      >
-                        <FiKey size={26} />
-                      </button>
-                      <button
-                        aria-label={`Delete ${u.name}`}
-                        className="text-green-900"
-                      >
-                        <FaRegTrashAlt size={23} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </main>
-      </CustomTabPanel>
+      <AttendanceModal
+        open={attendanceModalOpen}
+        onClose={() => {
+          setAttendanceModalOpen(false);
+          setSelectedEvent(null);
+        }}
+        event={selectedEvent}
+      />
     </>
   );
 };
