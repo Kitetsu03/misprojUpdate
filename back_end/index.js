@@ -14,6 +14,7 @@ import attendanceRoutes from "./modules/attendance/attendance.routes.js";
 import lgAttendanceRoutes from "./modules/lifegroup/lifegroupAttendance.routes.js";
 import contributionRoutes from "./modules/finance/contribution.routes.js";
 import expenseRoutes from "./modules/finance/expense.routes.js";
+import worshipServiceRoutes from "./modules/worship/worshipService.routes.js";
 
 // test route
 import productRoute from "./modules/product/product.route.js";
@@ -43,6 +44,8 @@ app.use("/api/attendance", attendanceRoutes);
 app.use("/api/lifegroup-attendance", lgAttendanceRoutes);
 app.use("/api/contributions", contributionRoutes);
 app.use("/api/expenses", expenseRoutes);
+
+app.use("/api/service", worshipServiceRoutes);
 
 app.use("/api/products", productRoute);
 

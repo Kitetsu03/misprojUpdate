@@ -1,13 +1,4 @@
-import { Attendance, WorshipService } from "./attendance.model.js";
-
-const createService = async (req, res) => {
-  try {
-    const service = await WorshipService.create(req.body);
-    res.status(201).json(service);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+import { Attendance } from "./attendance.model.js";
 
 const recordAttendance = async (req, res) => {
   try {
@@ -29,4 +20,4 @@ const getAttendance = async (req, res) => {
   }
 };
 
-export { createService, recordAttendance, getAttendance };
+export { recordAttendance, getAttendance };

@@ -3,15 +3,16 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import SearchBar from "../input/SearchBar.jsx";
-import { BlackButton } from "../buttons/BlackButton.jsx";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FiKey } from "react-icons/fi";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { useState, useMemo } from "react";
+import AttendanceModal from "../modals/attendance/AttendanceModal.jsx";
 
 export const AttendanceTabs = () => {
   const [searchValue, setSearchValue] = useState("");
   const [query, setQuery] = useState("");
+  const [attendanceModalOpen, setAttendanceModalOpen] = useState(false);
 
   const users = useMemo(
     () => [
@@ -61,10 +62,12 @@ export const AttendanceTabs = () => {
 
   const filteredUsers = useMemo(() => {
     if (!query) return users;
+
     const q = query.toLowerCase();
+
     return users.filter(
       (u) =>
-        u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q),
+        u.name.toLowerCase().includes(q) || u.network.toLowerCase().includes(q),
     );
   }, [users, query]);
 
@@ -120,15 +123,29 @@ export const AttendanceTabs = () => {
       </div>
       <CustomTabPanel value={value} index={0}>
         <main className="flex-1 p-1 space-y-2 font-secondary">
+          <AttendanceModal
+            open={attendanceModalOpen}
+            onClose={() => setAttendanceModalOpen(false)}
+            attendees={users}
+          />
           {/* Search & Filter */}
           <div className="card p-5 rounded-xl shadow-md">
-            <h2 className="font-semibold text-lg">Search & Filter</h2>
+            <div className="flex gap-2 justify-between md:flex-row pb-5">
+              <h2 className="font-semibold text-lg">Search & Filter</h2>
+              <button
+                onClick={() => setAttendanceModalOpen(true)}
+                className="bg-black text-white px-5 py-2 rounded-lg shadow-md hover:bg-gray-800 font-secondary"
+              >
+                + Add Attendance
+              </button>
+            </div>
             <div className="flex gap-2 flex-col md:flex-row">
               <SearchBar
                 value={searchValue}
                 onChange={(v) => setSearchValue(v)}
                 onSearch={() => setQuery(searchValue)}
               />
+
               <label
                 htmlFor="network-filter"
                 className="text-sm font-medium flex flex-col md:flex-row items-start md:items-center gap-1"
@@ -213,18 +230,16 @@ export const AttendanceTabs = () => {
             {/* Mobile stacked cards (visible on small screens) */}
             <div className="md:hidden space-y-3">
               {filteredUsers.map((u) => (
-                <div key={u.email} className=" p-4 rounded-lg shadow-sm border">
+                <div key={u.id} className="p-4 rounded-lg shadow-sm border">
                   <div className="flex justify-between items-start">
                     <div>
                       <div className="font-semibold text-sm">{u.name}</div>
-                      <div className="text-xs text-gray-600">{u.email}</div>
+                      <div className="text-xs text-gray-600">{u.network}</div>
                     </div>
 
                     <div className="ml-3">
-                      <span
-                        className={`${u.color} text-white text-xs px-3 py-1 rounded-full`}
-                      >
-                        {u.role}
+                      <span className="bg-black text-white text-xs px-3 py-1 rounded-full">
+                        {u.attendance}
                       </span>
                     </div>
                   </div>
@@ -263,6 +278,7 @@ export const AttendanceTabs = () => {
       <CustomTabPanel value={value} index={1}>
         <main className="flex-1 p-1 space-y-5 font-secondary">
           {/* Search & Filter */}
+
           <div className="card p-5 rounded-xl shadow-md space-y-3">
             <h2 className="font-semibold text-lg">Search & Filter</h2>
             <div className="flex gap-2 flex-col md:flex-row">
@@ -356,18 +372,16 @@ export const AttendanceTabs = () => {
             {/* Mobile stacked cards (visible on small screens) */}
             <div className="md:hidden space-y-3">
               {filteredUsers.map((u) => (
-                <div key={u.email} className=" p-4 rounded-lg shadow-sm border">
+                <div key={u.id} className=" p-4 rounded-lg shadow-sm border">
                   <div className="flex justify-between items-start">
                     <div>
                       <div className="font-semibold text-sm">{u.name}</div>
-                      <div className="text-xs text-gray-600">{u.email}</div>
+                      <div className="text-xs text-gray-600">{u.network}</div>
                     </div>
 
                     <div className="ml-3">
-                      <span
-                        className={`${u.color} text-white text-xs px-3 py-1 rounded-full`}
-                      >
-                        {u.role}
+                      <span className="bg-black text-white text-xs px-3 py-1 rounded-full">
+                        {u.attendance}
                       </span>
                     </div>
                   </div>
