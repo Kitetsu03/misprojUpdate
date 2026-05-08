@@ -32,7 +32,7 @@ function Profile() {
 
   return (
     <>
-      <div className="min-h-screen pb-20 ">
+      <div className="min-h-screen pb-20 font-secondary">
         <div className="card w-full md:w-full pt-5">
           <div className="card-header">
             <div className="my-logo justify-center"></div>
@@ -44,7 +44,7 @@ function Profile() {
         <main className="main-content px-5 space-y-5 sm:px-10 md:px-20 lg:px-40">
           <section className="welcome-section text-center p-4 ">
             <h1 className="welcome-title text-amber-50 font-extrabold text-3xl sm:text-5xl md:text-6xl p-4 font-secondary">
-              MY PROFILE
+              PROFILE
             </h1>
             <p className="welcome-subtext text-xl">
               Update your information and family details.
@@ -76,9 +76,7 @@ function Profile() {
           </section>
 
           <section className="section-card bg-white w-full p-4 shadow rounded-xl border-2">
-            <div className="flex justify-end mt-4">
-              <EditButton />
-            </div>
+            <div className="flex justify-end mt-4"></div>
             <h2 className="font-bold flex items-center gap-3">
               <HiOutlineInformationCircle />
               Personal Information
@@ -148,9 +146,7 @@ function Profile() {
           </section>
 
           <section className="section-card bg-white w-full p-4 shadow rounded-xl border-2">
-            <div className="flex justify-end mt-4">
-              <EditButton />
-            </div>
+            <div className="flex justify-end mt-4"></div>
             <h2 className="font-bold flex items-center gap-3">
               <MdLocationPin />
               Address Information
@@ -202,9 +198,7 @@ function Profile() {
           </section>
 
           <section className="section-card bg-white w-full p-4 shadow rounded-xl border-2">
-            <div className="flex justify-end mt-4">
-              <EditButton />
-            </div>
+            <div className="flex justify-end mt-4"></div>
             <h2 className="font-bold flex items-center gap-3">
               <MdContactEmergency />
               Emergency Contact
@@ -261,11 +255,7 @@ function Profile() {
             </div>
           </section>
 
-          <div className="flex justify-center">
-            <button className="btn flex items-center gap-3 px-20 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition">
-              Save Changes
-            </button>
-          </div>
+          <div className="flex justify-center"></div>
         </main>
       </div>
 

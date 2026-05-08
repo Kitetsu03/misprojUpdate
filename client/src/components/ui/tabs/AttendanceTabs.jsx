@@ -12,6 +12,7 @@ import { FiKey } from "react-icons/fi";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { useState, useMemo, useEffect } from "react";
 import AttendanceModal from "../modals/attendance/AttendanceModal.jsx";
+import LifegroupAttendanceModal from "../modals/lifegroup/LifegroupAttendanceModal.jsx";
 import { getServices } from "../../../services/worshipEventService.js";
 
 import { motion } from "motion/react";
@@ -21,6 +22,8 @@ export const AttendanceTabs = () => {
   const [searchValue, setSearchValue] = useState("");
   const [query, setQuery] = useState("");
   const [attendanceModalOpen, setAttendanceModalOpen] = useState(false);
+
+  const [lifegroupModalOpen, setLifegroupModalOpen] = useState(false);
   const [eventTypeFilter, setEventTypeFilter] = useState("");
   const [events, setEvents] = useState([]);
 
@@ -34,7 +37,7 @@ export const AttendanceTabs = () => {
 
   const handleOpenAttendance = (event) => {
     setSelectedEvent(event);
-    setAttendanceModalOpen(true);
+    setLifegroupModalOpen(true);
   };
 
   useEffect(() => {
@@ -250,9 +253,9 @@ export const AttendanceTabs = () => {
         <CustomTabPanel value={value} index={1}>
           <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-4">
             <div>
-              <h2 className="font-semibold text-lg">Service Schedule</h2>
+              <h2 className="font-semibold text-lg">Lifegroup Sessions</h2>
               <p className="text-sm text-gray-600 mb-8">
-                Manage service times and locations.
+                Manage lifegroup sessions and attendance.
               </p>
             </div>
             <div className="w-full md:w-64">
@@ -350,6 +353,14 @@ export const AttendanceTabs = () => {
         onClose={() => {
           setAttendanceModalOpen(false);
           setSelectedEvent(null);
+        }}
+        event={selectedEvent}
+      />
+      <LifegroupAttendanceModal
+        open={lifegroupModalOpen}
+        onClose={() => {
+          setLifegroupModalOpen(false);
+          setSelectedLifegroup(null);
         }}
         event={selectedEvent}
       />

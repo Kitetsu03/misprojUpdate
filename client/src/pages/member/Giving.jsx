@@ -59,7 +59,7 @@ function Giving() {
 
   return (
     <>
-      <div className="min-h-screen pb-20">
+      <div className="min-h-screen pb-20 font-secondary">
         <div className="card w-full md:w-full pt-5">
           <div className="card-header">
             <div className="my-logo justify-center"></div>
@@ -71,7 +71,7 @@ function Giving() {
         <main className="main-content px-5 space-y-5">
           <section className="welcome-section text-center p-4 ">
             <h1 className="welcome-title text-amber-50 font-extrabold text-3xl sm:text-5xl md:text-6xl p-4 font-secondary ">
-              MY GIVING
+              GIVING
             </h1>
             <p className="welcome-subtext text-xl">
               View your giving summary and fund allocation.

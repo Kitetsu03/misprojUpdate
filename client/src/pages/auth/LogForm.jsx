@@ -114,10 +114,9 @@ function LogForm({ setLoaderVisible }) {
       }, 3000);
     } catch (error) {
       const backendMessage =
+        "Invalid email or password. Please try again." ||
         error.response?.data?.errors?.join("\n") ||
-        error.response?.data?.message ||
-        "Invalid email or password. Please try again.";
-
+        error.response?.data?.message;
       setSnackbarMessage(backendMessage);
       setSnackbarSeverity("error");
       setOpenSnackbar(true);

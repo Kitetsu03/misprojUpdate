@@ -8,6 +8,7 @@ import { BlackButton } from "../buttons/BlackButton";
 import { Input } from "../input/Input";
 import { useEffect, useState } from "react";
 import CreateServiceModal from "../modals/service/CreateServiceModal.jsx";
+import CreateLifegroupModal from "../modals/lifegroup/CreateLifegroupModal.jsx";
 import { getServices } from "../../../services/worshipEventService.js";
 
 export const SettingsTabs = () => {
@@ -265,9 +266,9 @@ export const SettingsTabs = () => {
                 onClick={() => setOpen(true)}
                 className="bg-black text-white px-5 py-2 rounded-lg shadow-md hover:bg-gray-800 font-secondary"
               >
-                + Add Event
+                + Create Lifegroup
               </button>
-              <CreateServiceModal
+              <CreateLifegroupModal
                 open={open}
                 onClose={() => setOpen(false)}
                 onSuccess={handleEventCreated}

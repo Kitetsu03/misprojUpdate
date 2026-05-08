@@ -94,7 +94,7 @@ memberSchema.pre("save", function () {
     this.network = this.sex === "male" ? "Men" : "Women";
   }
 
-  next();
+  return;
 });
 
 const Member = mongoose.model("Member", memberSchema);

@@ -237,7 +237,7 @@ const LifegroupAttendanceModal = ({ open, onClose, event }) => {
             <div className="text-sm font-medium">
               <p>Total Members: {filteredMembers.length}</p>
 
-              <p>{attendanceCount} marked present</p>
+              <p>{attendanceCount} Marked as Present</p>
             </div>
           </div>
 

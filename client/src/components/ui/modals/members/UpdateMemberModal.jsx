@@ -80,8 +80,7 @@ function UpdateMemberModal({ open, onClose, userData, onSuccess }) {
     return value
       .replace(/<[^>]*>?/gm, "") // remove HTML tags
       .replace(/[<>]/g, "") // extra safety
-      .replace(/javascript:/gi, "") // prevent JS injection
-      .trim();
+      .replace(/javascript:/gi, ""); // prevent JS injection
   };
 
   const handleInputChange = (e) => {
