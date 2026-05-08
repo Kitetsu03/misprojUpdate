@@ -1,24 +1,24 @@
 import API from "./api";
 
-export const toggleAttendance = async ({ eventId, member }) => {
-  const payload = {
-    service_id: eventId,
-    member_id: member.member_id,
-    is_guest: member.isGuest || false,
-    guest_name: member.name,
-    status: member.status === "present" ? "absent" : "present",
-  };
-
-  const { data } = await API.post("/attendance/toggle", payload);
-  return data;
+// GET attendance by service/event
+export const getAttendanceByService = async (serviceId) => {
+  const res = await API.get(`/attendance/${serviceId}`);
+  return res.data;
 };
 
-// bulk save attendance
-export const saveAttendance = (data) => API.post("/attendance/bulk", data);
+// SAVE attendance
+export const saveAttendance = async (records) => {
+  const res = await API.post("/attendance/bulk", records);
+  return res.data;
+};
 
-// attendanceService.js
-export const getAttendanceByService = async (serviceId) => {
-  if (!serviceId) throw new Error("Service ID required");
+// TOGGLE attendance
+export const toggleAttendance = async (payload) => {
+  const res = await API.post("/attendance/toggle", payload);
+  return res.data;
+};
 
-  return API.get(`/attendance?service_id=${serviceId}`).then((res) => res.data);
+export const deleteGuestAttendance = async (attendanceId) => {
+  const res = await API.delete(`/attendance/guest/${attendanceId}`);
+  return res.data;
 };

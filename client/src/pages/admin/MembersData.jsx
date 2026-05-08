@@ -23,7 +23,7 @@ function MembersData() {
   const [searchValue, setSearchValue] = useState("");
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
+  const [networkFilter, setNetworkFilter] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [members, setMembers] = useState([]);
   const [error, setError] = useState([]);
@@ -82,7 +82,7 @@ function MembersData() {
         email: row.email || "",
         contact_no: row.contact_no || "",
         status: (row.status || "active").toLowerCase(),
-        category: row.category || "Category 1",
+        network: row.network || "Men",
         attendance: Number(row.attendance) || 0,
         last_visit: row.last_visit || null,
       }));
@@ -196,7 +196,7 @@ function MembersData() {
       email: user?.email || "N/A",
 
       status,
-      category: u.category || "N/A",
+      network: u.network || "N/A",
       attendance: u.attendance ?? 0,
       lastVisit: u.lastLogin || "N/A",
 
@@ -265,11 +265,11 @@ function MembersData() {
         u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q);
 
       const matchesStatus = !statusFilter || u.status === statusFilter;
-      const matchesCategory =
-        !categoryFilter ||
-        u.category.toLowerCase() === categoryFilter.toLowerCase();
+      const matchesNetwork =
+        !networkFilter ||
+        u.network.toLowerCase() === networkFilter.toLowerCase();
 
-      return matchesSearch && matchesStatus && matchesCategory;
+      return matchesSearch && matchesStatus && matchesNetwork;
     });
 
     // SORTING
@@ -282,7 +282,7 @@ function MembersData() {
     }
 
     return filtered;
-  }, [members, query, statusFilter, categoryFilter, sortBy]);
+  }, [members, query, statusFilter, networkFilter, sortBy]);
 
   const downloadCSVTemplate = () => {
     const headers = [
@@ -459,14 +459,16 @@ function MembersData() {
                   />
 
                   <Dropdown
-                    value={categoryFilter}
-                    placeholder="Filter by category"
-                    onChange={(value) => setCategoryFilter(value)}
+                    value={networkFilter}
+                    placeholder="Filter by Network"
+                    onChange={(value) => setNetworkFilter(value)}
                     options={[
-                      { label: "All Categories", value: "" },
-                      { label: "Category 1", value: "Category 1" },
-                      { label: "Category 2", value: "Category 2" },
-                      { label: "Category 3", value: "Category 3" },
+                      { label: "All Network", value: "" },
+                      { label: "Men", value: "Men" },
+                      { label: "Women", value: "Women" },
+                      { label: "KKB", value: "KKB" },
+                      { label: "YAN", value: "YAN" },
+                      { label: "Children", value: "Children" },
                     ]}
                   />
                   <Dropdown
@@ -504,7 +506,7 @@ function MembersData() {
                     <th className="pb-2">Contact</th>
                     <th className="pb-2">Email</th>
                     <th className="pb-2">Status</th>
-                    <th className="pb-2">Category</th>
+                    <th className="pb-2">Network</th>
                     <th className="pb-2">Attendance</th>
                     <th className="pb-2">Last Visit</th>
                     <th className="pb-2">Actions</th>
@@ -524,7 +526,7 @@ function MembersData() {
                         <span
                           className={`${u.color} text-white text-xs px-3 py-1 rounded-full`}
                         >
-                          {u.category}
+                          {u.network}
                         </span>
                       </td>
 

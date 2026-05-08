@@ -16,7 +16,7 @@ import {
 
 import { useEffect, useState, useMemo } from "react";
 
-const AttendanceModal = ({ open, onClose, event }) => {
+const LifegroupAttendanceModal = ({ open, onClose, event }) => {
   const [attendees, setAttendees] = useState([]);
   const [attendanceMap, setAttendanceMap] = useState({});
 
@@ -511,4 +511,4 @@ const AttendanceModal = ({ open, onClose, event }) => {
   );
 };
 
-export default AttendanceModal;
+export default LifegroupAttendanceModal;

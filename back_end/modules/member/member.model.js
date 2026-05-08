@@ -66,9 +66,9 @@ const memberSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-memberSchema.pre("save", function (next) {
+memberSchema.pre("save", function () {
   if (!this.birth_date || !this.sex) {
-    return next();
+    return;
   }
 
   const today = new Date();

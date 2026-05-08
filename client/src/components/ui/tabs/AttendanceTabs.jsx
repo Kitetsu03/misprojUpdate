@@ -247,9 +247,103 @@ export const AttendanceTabs = () => {
             </div>
           )}
         </CustomTabPanel>
-      </div>
+        <CustomTabPanel value={value} index={1}>
+          <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center mb-4">
+            <div>
+              <h2 className="font-semibold text-lg">Service Schedule</h2>
+              <p className="text-sm text-gray-600 mb-8">
+                Manage service times and locations.
+              </p>
+            </div>
+            <div className="w-full md:w-64">
+              <Dropdown
+                color="bg-[#A7E6FF]"
+                value={eventTypeFilter}
+                placeholder="Filter by event title"
+                onChange={(value) => setEventTypeFilter(value)}
+                options={[
+                  { label: "All Events", value: "" },
+                  { label: "Worship Service", value: "sunday service" },
+                  { label: "Special Service", value: "special service" },
+                  { label: "Prayer Meeting", value: "prayer meeting" },
+                  { label: "Youth Service", value: "youth service" },
+                ]}
+              />
+            </div>
+          </div>
 
-      <CustomTabPanel value={value} index={1}></CustomTabPanel>
+          {/* EVENTS */}
+          {loading ? (
+            <div className="text-gray-500 text-sm">Loading events...</div>
+          ) : filteredEvents.length === 0 ? (
+            <div className="text-gray-500 text-sm">No events found.</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
+              {filteredEvents.map((event, index) => (
+                <motion.div
+                  key={event._id}
+                  onClick={() => handleOpenAttendance(event)}
+                  className="card p-5 rounded-2xl text-green-950 flex flex-col cursor-pointer inset-shadow-2xs shadow-md"
+                  whileHover={{
+                    scale: 1.03,
+                    y: -2,
+                  }}
+                  whileTap={{ scale: 0.99 }}
+                  transition={cardSpring}
+                  initial={cardAnim.initial}
+                  animate={cardAnim.animate}
+                >
+                  {/* TITLE */}
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="font-semibold text-xl">{event.title}</h3>
+                    </div>
+                    <button
+                      onClick={() => handleOpenAttendance(event)}
+                      className="flex items-center gap-1 px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+                    >
+                      <HiOutlinePencilSquare size={16} /> Edit
+                    </button>
+                  </div>
+
+                  {/* DETAILS */}
+                  <div className="mt-5 space-y-3 text-sm">
+                    <div className="flex justify-between gap-3">
+                      <span className="font-medium">Date</span>
+
+                      <span className="text-right font-medium">
+                        {new Date(event.service_date).toLocaleDateString(
+                          "en-PH",
+                          {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          },
+                        )}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span className="font-medium">Time</span>
+
+                      <span className="font-medium">{event.time}</span>
+                    </div>
+
+                    <div className="flex justify-between gap-3">
+                      <span className="font-medium">Location</span>
+
+                      <span className="text-right font-medium">
+                        {event.location}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </CustomTabPanel>
+      </div>
 
       <AttendanceModal
         open={attendanceModalOpen}

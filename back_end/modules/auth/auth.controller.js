@@ -40,7 +40,7 @@ export const changePassword = async (req, res) => {
         message: "New password must be different from current password.",
       });
     }
-    user.passkey = newPassword; // auto-hashed by pre-save hook
+    user.passkey = newPassword; // auto-hashed
     user.mustChangePassword = false;
 
     await user.save();

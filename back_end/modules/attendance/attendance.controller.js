@@ -1,8 +1,9 @@
 import * as attendanceService from "./attendance.service.js";
 
+// GET /api/attendance
 export const getAttendanceHandler = async (req, res) => {
   try {
-    const { service_id } = req.query;
+    const { service_id } = req.params;
     if (!service_id)
       return res.status(400).json({ message: "service_id is required" });
 
@@ -31,5 +32,19 @@ export const toggleAttendanceHandler = async (req, res) => {
     res.json(record);
   } catch (err) {
     res.status(400).json({ message: err.message });
+  }
+};
+
+export const deleteGuestAttendanceHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await attendanceService.deleteGuestAttendance(id);
+
+    res.json(result);
+  } catch (err) {
+    res.status(400).json({
+      message: err.message,
+    });
   }
 };

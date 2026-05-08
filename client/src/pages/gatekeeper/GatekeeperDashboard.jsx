@@ -30,7 +30,7 @@ function GatekeeperDashboard() {
               CHURCH MANAGEMENT DASHBOARD
             </h1>
             <p className="pt-1 text-white">
-              Welcome back! Here's an overview of your church's key metrics and
+              Welcome! Here's an overview of your church's key metrics and
               recent activity.
             </p>
           </header>

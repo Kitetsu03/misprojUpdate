@@ -35,20 +35,6 @@ function AdminNav() {
             </h3>
 
             <ul className="w-full">
-              <NavLink to="/admin/myprofile">
-                {({ isActive }) => (
-                  <li
-                    className={`p-4 border-t-white/20 border-t-2 text-[1.2rem] hover:bg-white/20 ${
-                      isActive
-                        ? "bg-white text-blue-500 font-semibold rounded-lg mx-2"
-                        : ""
-                    }`}
-                  >
-                    My Profile
-                  </li>
-                )}
-              </NavLink>
-
               <hr className="opacity-30" />
 
               <NavLink to="/admin" end>

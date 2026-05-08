@@ -1,6 +1,5 @@
 import GatekeeperNav from "../../components/GatekeeperNav.jsx";
 import { AttendanceTabs } from "../../components/ui/tabs/AttendanceTabs.jsx";
-import { BlackButton } from "../../components/ui/buttons/BlackButton.jsx";
 export function Attendance() {
   return (
     <>
@@ -17,7 +16,6 @@ export function Attendance() {
                 Tracking attendance of church members and visitors.
               </p>
             </div>
-            <BlackButton val={"+ Add Attendance"} />
           </div>
           <AttendanceTabs />
         </main>

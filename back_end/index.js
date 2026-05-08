@@ -44,7 +44,6 @@ app.use("/api/attendance", attendanceRoutes);
 app.use("/api/lifegroup-attendance", lgAttendanceRoutes);
 app.use("/api/contributions", contributionRoutes);
 app.use("/api/expenses", expenseRoutes);
-
 app.use("/api/service", worshipServiceRoutes);
 
 app.use("/api/products", productRoute);
