@@ -9,7 +9,6 @@ const attendanceSchema = new mongoose.Schema(
       required: true,
     },
 
-    // MEMBER (optional for guests)
     member_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Member",
@@ -27,8 +26,8 @@ const attendanceSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["present", "absent", "late"],
-      default: "present",
+      enum: ["present", "absent"],
+      default: "absent",
     },
 
     time_in: {
@@ -44,7 +43,6 @@ const attendanceSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-/* Prevent duplicate MEMBER attendance */
 attendanceSchema.index(
   { service_id: 1, member_id: 1 },
   {
@@ -53,7 +51,6 @@ attendanceSchema.index(
   },
 );
 
-/* Validation: ensure either member OR guest is provided */
 attendanceSchema.pre("validate", function (next) {
   if (!this.member_id && !this.is_guest) {
     return next(
@@ -61,8 +58,13 @@ attendanceSchema.pre("validate", function (next) {
     );
   }
 
-  if (this.is_guest && !this.guest_name) {
-    return next(new Error("Guest name is required for guest attendance."));
+  if (this.is_guest) {
+    if (!this.guest_name?.trim()) {
+      return next(new Error("Guest name is required for guest attendance."));
+    }
+
+    // guests should not have member_id
+    this.member_id = undefined;
   }
 
   next();

@@ -1,8 +1,14 @@
 import express from "express";
-import { recordAttendance, getAttendance } from "./attendance.controller.js";
+import {
+  getAttendanceHandler,
+  saveBulkAttendanceHandler,
+  toggleAttendanceHandler,
+} from "./attendance.controller.js";
 
 const router = express.Router();
-router.post("/", recordAttendance);
-router.get("/", getAttendance);
+
+router.get("/", getAttendanceHandler);
+router.post("/bulk", saveBulkAttendanceHandler);
+router.post("/toggle", toggleAttendanceHandler);
 
 export default router;

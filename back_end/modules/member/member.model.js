@@ -14,7 +14,7 @@ const memberSchema = new mongoose.Schema(
     birth_date: Date,
     marital_status: {
       type: String,
-      enum: ["single", "married", "divorced"],
+      enum: ["single", "married", "seperated", "widowed"],
     },
 
     sex: {

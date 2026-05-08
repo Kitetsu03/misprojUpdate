@@ -45,8 +45,8 @@ export const AttendanceTabs = () => {
     try {
       setLoading(true);
       const response = await getServices();
-
       setEvents(response.data);
+      console.log("Services fetched:", response.data);
     } catch (error) {
       setSnackbarMessage(
         error.response?.data?.message || "Failed to fetch events.",
@@ -196,13 +196,18 @@ export const AttendanceTabs = () => {
                   transition={cardSpring}
                   initial={cardAnim.initial}
                   animate={cardAnim.animate}
-                  transitionDelay={index * 0.05}
                 >
                   {/* TITLE */}
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-semibold text-xl">{event.title}</h3>
                     </div>
+                    <button
+                      onClick={() => handleOpenAttendance(event)}
+                      className="flex items-center gap-1 px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+                    >
+                      <HiOutlinePencilSquare size={16} /> Edit
+                    </button>
                   </div>
 
                   {/* DETAILS */}
