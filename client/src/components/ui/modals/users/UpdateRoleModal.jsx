@@ -108,7 +108,6 @@ function RoleUpdateModal({ open, onClose, userData, onSuccess }) {
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="">Select Role</option>
-              <option value="admin">Admin</option>
               <option value="gatekeeper">Gatekeeper</option>
               <option value="member">Member</option>
             </select>
