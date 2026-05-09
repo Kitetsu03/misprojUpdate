@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(
   cors({
-    origin: "http://192.168.1.24:5173",
+    origin: process.env.CLIENT_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
