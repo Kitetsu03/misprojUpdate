@@ -8,10 +8,11 @@ import mongoose from "mongoose";
 import authRoutes from "./modules/auth/auth.routes.js";
 import userRoutes from "./modules/account/user.routes.js";
 import memberRoutes from "./modules/member/member.routes.js";
-import lifegroupRoutes from "./modules/lifegroup/lifegroup.routes.js";
+import lifeGroupRoutes from "./modules/lifegroup/lifegroup.routes.js";
 import ministryRoutes from "./modules/ministry/ministry.routes.js";
 import attendanceRoutes from "./modules/attendance/attendance.routes.js";
 import lgAttendanceRoutes from "./modules/lifegroup/lifegroupAttendance.routes.js";
+
 import contributionRoutes from "./modules/finance/contribution.routes.js";
 import expenseRoutes from "./modules/finance/expense.routes.js";
 import worshipServiceRoutes from "./modules/worship/worshipService.routes.js";
@@ -38,9 +39,10 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/members", memberRoutes);
-app.use("/api/lifegroups", lifegroupRoutes);
+app.use("/api/lifegroups", lifeGroupRoutes);
 app.use("/api/ministries", ministryRoutes);
 app.use("/api/attendance", attendanceRoutes);
+
 app.use("/api/lifegroup-attendance", lgAttendanceRoutes);
 app.use("/api/contributions", contributionRoutes);
 app.use("/api/expenses", expenseRoutes);

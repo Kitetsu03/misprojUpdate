@@ -1,222 +1,202 @@
 import { useState } from "react";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  MenuItem,
-} from "@mui/material";
 
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
+export default function CreateLifeGroupModal({ open, onClose, onSubmit }) {
+  const [formData, setFormData] = useState({
+    lifegroup_name: "",
+    type: "",
+    gender_profile: "",
+    address: "",
+    contact_number: "",
+    host_name: "",
+    schedule: "",
+    opened_date: "",
+    barangay: "",
+    district: "",
+  });
 
-import { Input } from "../../input/Input.jsx";
-import { createService } from "../../../../services/worshipEventService.js";
-
-function CreateServiceModal({ open, onClose, onSuccess }) {
-  const [title, setTitle] = useState("");
-  const [serviceDate, setServiceDate] = useState("");
-  const [time, setTime] = useState("");
-  const [location, setLocation] = useState("");
-
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-
-  const serviceOptions = [
-    "Sunday Service",
-    "Youth Service",
-    "Prayer Meeting",
-    "Special Service",
-  ];
-
-  const timeOptions = ["8:00 AM", "10:00 AM", "3:00 PM", "6:00 PM"];
-
-  // Disable past dates
-  const today = new Date().toISOString().split("T")[0];
-
-  const handleDateChange = (e) => {
-    const selectedDate = e.target.value;
-
-    setServiceDate(selectedDate);
-
-    const day = new Date(selectedDate).getDay();
-
-    if (day === 0) {
-      setTitle("Sunday Service");
-    }
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const getNextSunday = () => {
-    const today = new Date();
-    const nextSunday = new Date(today);
-    const daysUntilSunday = (7 - today.getDay()) % 7;
-
-    nextSunday.setDate(today.getDate() + daysUntilSunday);
-    return nextSunday.toISOString().split("T")[0];
-  };
-
-  const handleCreate = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!title || !serviceDate || !time || !location) {
-      setSnackbarMessage("All fields are required.");
-      setSnackbarSeverity("warning");
-      setOpenSnackbar(true);
-      return;
-    }
-
-    try {
-      const payload = {
-        title,
-        service_date: serviceDate,
-        time,
-        location,
-      };
-
-      await createService(payload);
-
-      setSnackbarMessage("Service created successfully!");
-      setSnackbarSeverity("success");
-      setOpenSnackbar(true);
-
-      if (onSuccess) onSuccess();
-
-      setTitle("");
-      setServiceDate("");
-      setTime("");
-      setLocation("");
-      onClose();
-    } catch (error) {
-      const backendMessage =
-        error.response?.data?.message || "Failed to create service.";
-
-      setSnackbarMessage(backendMessage);
-      setSnackbarSeverity("error");
-      setOpenSnackbar(true);
-    }
+    onSubmit(formData);
   };
 
+  if (!open) return null;
+
   return (
-    <>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}
-        onClose={() => setOpenSnackbar(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert
-          onClose={() => setOpenSnackbar(false)}
-          severity={snackbarSeverity}
-          variant="filled"
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-
-      <Dialog
-        open={open}
-        onClose={onClose}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{
-          sx: { borderRadius: "16px" },
-        }}
-      >
-        <DialogTitle>
-          <h1 className="text-2xl font-semibold pl-3 pt-3">Create Event</h1>
-
-          <p className="text-gray-500 text-sm pl-3">
-            Add a new worship service schedule.
-          </p>
-        </DialogTitle>
-
-        <DialogContent>
-          <form
-            id="create-service-form"
-            onSubmit={handleCreate}
-            className="space-y-4 mt-2 font-secondary p-3"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 font-secondary p-3">
-              <TextField
-                select
-                label="Service Title"
-                value={title}
-                onChange={(e) => {
-                  const selectedTitle = e.target.value;
-                  setTitle(selectedTitle);
-                  if (selectedTitle === "Sunday Service") {
-                    setServiceDate(getNextSunday());
-                    setLocation("Main Church");
-                  }
-                }}
-                fullWidth
-              >
-                {serviceOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
-
-              <TextField
-                select
-                label="Service Time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                fullWidth
-              >
-                {timeOptions.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <Input
-                id="service_date"
-                type="date"
-                label="Service Date"
-                value={serviceDate}
-                min={today}
-                onChange={handleDateChange}
-              />
-              <Input
-                id="location"
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      <div className="w-full max-w-3xl rounded-2xl bg-white shadow-xl">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b px-6 py-4">
+          <h2 className="text-xl font-bold">Create Lifegroup</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-black">
+            ✕
+          </button>
+        </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 gap-4 p-6 md:grid-cols-2">
+            {/* LifeGroup Name */}
+            <div>
+              <label className="mb-1 block text-sm font-medium">
+                Lifegroup Name
+              </label>
+              <input
                 type="text"
-                label="Location"
-                value={location}
-                placeholder="Main Church"
-                onChange={(e) => setLocation(e.target.value)}
+                name="lifegroup_name"
+                value={formData.lifegroup_name}
+                onChange={handleChange}
+                className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter LifeGroup name"
               />
             </div>
-          </form>
-        </DialogContent>
-
-        <DialogActions>
-          <div className="pb-3">
+            {/* Type */}
+            <div>
+              <label className="mb-1 block text-sm font-medium">Type</label>
+              <select
+                name="type"
+                value={formData.type}
+                onChange={handleChange}
+                className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select Type</option>
+                <option value="homogenous">Homogenous</option>
+                <option value="heterogenous">Heterogenous</option>
+              </select>
+            </div>
+            {/* Gender Profile */}
+            <div>
+              <label className="mb-1 block text-sm font-medium">
+                Gender Profile
+              </label>
+              <select
+                name="gender_profile"
+                value={formData.gender_profile}
+                onChange={handleChange}
+                className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select Gender</option>
+                <option value="men">Men</option>
+                <option value="women">Women</option>
+              </select>
+            </div>
+            {/* Contact Number */}
+            <div>
+              <label className="mb-1 block text-sm font-medium">
+                Contact Number
+              </label>
+              <input
+                type="text"
+                name="contact_number"
+                value={formData.contact_number}
+                onChange={handleChange}
+                className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="09XXXXXXXXX"
+              />
+            </div>
+            {/* Host Name */}
+            <div>
+              <label className="mb-1 block text-sm font-medium">
+                Host Name
+              </label>
+              <input
+                type="text"
+                name="host_name"
+                value={formData.host_name}
+                onChange={handleChange}
+                className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter host name"
+              />
+            </div>
+            {/* Schedule */}
+            <div>
+              <label className="mb-1 block text-sm font-medium">Schedule</label>
+              <input
+                type="text"
+                name="schedule"
+                value={formData.schedule}
+                onChange={handleChange}
+                className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Friday • 7:00 PM"
+              />
+            </div>
+            {/* Opened Date */}
+            <div>
+              <label className="mb-1 block text-sm font-medium">
+                Opened Date
+              </label>
+              <input
+                type="date"
+                name="opened_date"
+                value={formData.opened_date}
+                onChange={handleChange}
+                className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            {/* Barangay */}
+            <div>
+              <label className="mb-1 block text-sm font-medium">Barangay</label>
+              <input
+                type="text"
+                name="barangay"
+                value={formData.barangay}
+                onChange={handleChange}
+                className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter barangay"
+              />
+            </div>
+            {/* District */}
+            <div>
+              <label className="mb-1 block text-sm font-medium">
+                Purok/Sitio
+              </label>
+              <input
+                type="text"
+                name="district"
+                value={formData.district}
+                onChange={handleChange}
+                className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter Purok/Sitio"
+              />
+            </div>
+            {/* Address */}
+            <div className="md:col-span-2">
+              <label className="mb-1 block text-sm font-medium">Address</label>
+              <textarea
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                rows={3}
+                className="w-full rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter full address"
+              />
+            </div>
+          </div>
+          {/* Footer */}
+          <div className="flex justify-end gap-3 border-t px-6 py-4">
+            {" "}
             <button
+              type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg bg-gray-200 font-secondary"
+              className="rounded-lg border px-4 py-2 hover:bg-gray-100"
             >
               Cancel
             </button>
-          </div>
-
-          <div className="pb-3 pr-3">
             <button
               type="submit"
-              form="create-service-form"
-              disabled={!title || !serviceDate || !time || !location}
-              className="px-4 py-2 rounded-lg bg-black text-white disabled:opacity-50 font-secondary"
+              className="rounded-lg bg-black px-4 py-2 text-white hover:bg-gray-600"
             >
-              Create
+              Create Lifegroup
             </button>
           </div>
-        </DialogActions>
-      </Dialog>
-    </>
+        </form>
+      </div>
+    </div>
   );
 }
-
-export default CreateServiceModal;

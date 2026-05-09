@@ -255,12 +255,6 @@ export const ReportTabs = () => {
           <div className="card p-5 rounded-xl shadow-md">
             <div className="flex gap-2 justify-between md:flex-row pb-5">
               <h2 className="font-semibold text-lg">Search & Filter</h2>
-              <button
-                onClick={() => setAttendanceModalOpen(true)}
-                className="bg-black text-white px-5 py-2 rounded-lg shadow-md hover:bg-gray-800 font-secondary"
-              >
-                + Add Attendance
-              </button>
             </div>
             <div className="flex gap-2 flex-col md:flex-row">
               <SearchBar

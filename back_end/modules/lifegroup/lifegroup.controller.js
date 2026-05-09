@@ -1,25 +1,46 @@
-import { LifeGroup, LifeGroupMember } from "./lifegroup.model.js";
+import {
+  createLifeGroupService,
+  getLifeGroupsService,
+  archiveLifeGroupService,
+} from "./lifegroup.service.js";
 
+/* CREATE */
 export const createLifeGroup = async (req, res) => {
   try {
-    const group = await LifeGroup.create(req.body);
-    res.status(201).json(group);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    const lifeGroup = await createLifeGroupService(req.body);
+
+    res.status(201).json(lifeGroup);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
-export const addMemberToLifeGroup = async (req, res) => {
+/* GET ALL */
+export const getLifeGroups = async (req, res) => {
   try {
-    const { lifegroup_id, member_id } = req.body;
+    const lifeGroups = await getLifeGroupsService();
 
-    const record = await LifeGroupMember.create({
-      lifegroup_id,
-      member_id,
+    res.json(lifeGroups);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
     });
+  }
+};
 
-    res.json(record);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+/* ARCHIVE */
+export const archiveLifeGroup = async (req, res) => {
+  try {
+    await archiveLifeGroupService(req.params.id);
+
+    res.json({
+      message: "LifeGroup archived successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };

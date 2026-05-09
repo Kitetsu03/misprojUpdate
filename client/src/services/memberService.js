@@ -36,6 +36,6 @@ export const deleteMember = async (id) => {
 
 // IMPORT MEMBERS IN BULK
 export const importMembers = async (members) => {
-  const response = await axios.post("/api/members/import", { members });
+  const response = await API.post("/members/import", { members });
   return response.data;
 };

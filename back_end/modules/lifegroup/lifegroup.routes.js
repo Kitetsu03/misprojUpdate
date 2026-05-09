@@ -1,12 +1,20 @@
 import express from "express";
+
 import {
   createLifeGroup,
-  addMemberToLifeGroup,
+  getLifeGroups,
+  archiveLifeGroup,
 } from "./lifegroup.controller.js";
 
 const router = express.Router();
 
+/* GET */
+router.get("/", getLifeGroups);
+
+/* CREATE */
 router.post("/", createLifeGroup);
-router.post("/add-member", addMemberToLifeGroup);
+
+/* ARCHIVE */
+router.put("/archive/:id", archiveLifeGroup);
 
 export default router;
